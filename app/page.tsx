@@ -9,7 +9,7 @@ export default async function Page() {
   const supabase = createClient(cookieStore)
   const user = await getUser()
 
-  if (!user) {
+  if (!user || !user.email) {
     redirect('/auth')
   }
 

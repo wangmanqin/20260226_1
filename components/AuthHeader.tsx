@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { createClient } from '@/utils/supabase/client';
+import { createBrowserClient } from '@/utils/supabase';
 
 interface AuthHeaderProps {
   userEmail: string;
@@ -9,7 +9,7 @@ interface AuthHeaderProps {
 
 export default function AuthHeader({ userEmail }: AuthHeaderProps) {
   const router = useRouter();
-  const supabase = createClient();
+  const supabase = createBrowserClient();
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();

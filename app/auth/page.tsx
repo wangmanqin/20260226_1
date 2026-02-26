@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { createClient } from '@/utils/supabase/client';
+import { createBrowserClient } from '@/utils/supabase';
 
 export default function AuthPage() {
   const [isLogin, setIsLogin] = useState(true);
@@ -13,7 +13,7 @@ export default function AuthPage() {
   const [validationErrors, setValidationErrors] = useState({ email: '', password: '' });
   const router = useRouter();
 
-  const supabase = createClient();
+  const supabase = createBrowserClient();
 
   const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
