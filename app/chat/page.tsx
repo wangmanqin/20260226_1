@@ -82,14 +82,14 @@ export default function ChatPage() {
     setIsTyping(true);
 
     try {
-      const response = await fetch(`${process.env.DEEPSEEK_BASE_URL}/chat/completions`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_DEEPSEEK_BASE_URL}/chat/completions`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${process.env.DEEPSEEK_API_KEY}`,
+          'Authorization': `Bearer ${process.env.NEXT_PUBLIC_DEEPSEEK_API_KEY}`,
         },
         body: JSON.stringify({
-          model: process.env.DEEPSEEK_MODEL,
+          model: process.env.NEXT_PUBLIC_DEEPSEEK_MODEL,
           messages: [
             { role: 'system', content: 'You are a helpful AI assistant.' },
             ...messages.map(msg => ({ role: msg.role, content: msg.content })),
