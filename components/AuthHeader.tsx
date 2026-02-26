@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { createBrowserClient } from '@/utils/supabase';
 
@@ -9,9 +10,23 @@ interface AuthHeaderProps {
 
 export default function AuthHeader({ userEmail }: AuthHeaderProps) {
   const router = useRouter();
-  const supabase = createBrowserClient();
+  const [supabase, setSupabase] = useState<any>(null);
+
+  useEffect(() => {
+    try {
+      const client = createBrowserClient();
+      setSupabase(client);
+    } catch (err) {
+      console.error('Failed to create Supabase client:', err);
+    }
+  }, []);
 
   const handleSignOut = async () => {
+    if (!supabase) {
+      console.error('Supabase client not available');
+      return;
+    }
+    
     await supabase.auth.signOut();
     router.push('/auth');
   };

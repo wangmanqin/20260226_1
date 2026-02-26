@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { createBrowserClient } from '@/utils/supabase';
 
@@ -11,9 +11,18 @@ export default function AuthPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [validationErrors, setValidationErrors] = useState({ email: '', password: '' });
+  const [supabase, setSupabase] = useState<any>(null);
   const router = useRouter();
 
-  const supabase = createBrowserClient();
+  useEffect(() => {
+    try {
+      const client = createBrowserClient();
+      setSupabase(client);
+    } catch (err) {
+      console.error('Failed to create Supabase client:', err);
+      setError('Failed to initialize authentication. Please check your environment configuration.');
+    }
+  }, []);
 
   const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -42,6 +51,11 @@ export default function AuthPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+
+    if (!supabase) {
+      setError('Authentication service is not available. Please try again later.');
+      return;
+    }
 
     if (!validateForm()) {
       return;
